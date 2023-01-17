@@ -5,10 +5,10 @@ const router = express.Router();
 
 
 
-// llamado: http://localhost:3000/categories
+// llamado: http://localhost:3000/api/v1/categories
 // este llamado nos a lista 10 porque no le pasamos una query entonces
 // limit es 10. Pero si le pasamos una query va a lista lo que le pasemos
-// y lo hacemos asi: http://localhost:3000/categories?size=5
+// y lo hacemos asi: http://localhost:3000/api/v1/categories?size=5
 
 router.get('/',(req, res)=>{
   const categories = [];
@@ -30,7 +30,7 @@ router.get('/filter',(req, res)=>{
   res.send('Yo soy un filter');
 })
 
-// llamado: http://localhost:3000/categories/12
+// llamado: http://localhost:3000/api/v1/categories/12
 // Este endpoit es dinamico
 router.get('/:id', (req, res)=>{
   const {id} = req.params;
@@ -42,7 +42,7 @@ router.get('/:id', (req, res)=>{
 })
 
 // Endpoint con dos parametros dinamicos en la url:
-// Llamado: http://localhost:3000/categories/12/products/12
+// Llamado: http://localhost:3000/api/v1/categories/12/products/12
 
 router.get('/:categoryId/products/:productId', (req, res)=>{
   const {categoryId, productId} = req.params;

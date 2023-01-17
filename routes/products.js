@@ -1,11 +1,10 @@
 const express = require('express');
 const faker = require('faker');
 const router = express.Router();
-
-// llamado: http://localhost:3000/products
+// llamado: http://localhost:3000/api/v1/products
 // este llamado nos a lista 10 porque no le pasamos una query entonces
 // limit es 10. Pero si le pasamos una query va a lista lo que le pasemos
-// y lo hacemos asi: http://localhost:3000/products?size=5
+// y lo hacemos asi: http://localhost:3000/api/v1/products?size=5
 
 router.get('/',(req, res)=>{
   const products = [];
@@ -28,7 +27,7 @@ router.get('/filter',(req, res)=>{
   res.send('Yo soy un filter');
 })
 
-// llamado: http://localhost:3000/products/12
+// llamado: http://localhost:3000/api/v1/products/12
 // Este endpoit es dinamico
 router.get('/:id', (req, res)=>{
   const {id} = req.params;
@@ -36,7 +35,16 @@ router.get('/:id', (req, res)=>{
     id,
     name: 'Preduct 2',
     price: 2000,
-  })
-})
+  });
+});
+
+router.post('/', (req, res)=>{
+  const body = req.body;
+  res.json({
+    meassage: 'created',
+    data: body,
+  });
+});
 
 module.exports = router;
+
