@@ -1,22 +1,16 @@
 const express = require('express');
-const faker = require('faker');
+const ProductsService = require('./../services/productServices')
 const router = express.Router();
+const service = new ProductsService();
+
+
 // llamado: http://localhost:3000/api/v1/products
 // este llamado nos a lista 10 porque no le pasamos una query entonces
 // limit es 10. Pero si le pasamos una query va a lista lo que le pasemos
 // y lo hacemos asi: http://localhost:3000/api/v1/products?size=5
 
 router.get('/',(req, res)=>{
-  const products = [];
-  const {size} = req.query;
-  const limit = size || 10;
-  for(let index = 0; index < limit; index ++){
-    products.push({
-      name: faker.commerce.productName(),
-      price: parseInt(faker.commerce.price(), 10),
-      image: faker.image.imageUrl(),
-    })
-  }
+ const products = service.find();
   res.status(200).json(products);
 });
 
@@ -31,17 +25,8 @@ router.get('/filter',(req, res)=>{
 // Este endpoit es dinamico
 router.get('/:id', (req, res)=>{
   const {id} = req.params;
-  if(id === '999'){
-    res.status(404).json({
-      message: 'No found.'
-    })
-  }else{
-    res.status(200).json({
-      id,
-      name: 'Preduct 2',
-      price: 2000,
-    });
-  };
+  const product = service.findOne(id);
+  res.status(200).json(product);
 });
 
 router.post('/', (req, res)=>{
