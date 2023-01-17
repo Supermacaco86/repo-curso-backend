@@ -17,30 +17,36 @@ router.get('/',(req, res)=>{
       image: faker.image.imageUrl(),
     })
   }
-  res.json(products);
+  res.status(200).json(products);
 });
 
 // Este endpoint es especifico.
 // Los endpoints especificos van antes que los dinamicos sino no van a funcionar.
 
 router.get('/filter',(req, res)=>{
-  res.send('Yo soy un filter');
+  res.status(200).send('Yo soy un filter');
 })
 
 // llamado: http://localhost:3000/api/v1/products/12
 // Este endpoit es dinamico
 router.get('/:id', (req, res)=>{
   const {id} = req.params;
-  res.json({
-    id,
-    name: 'Preduct 2',
-    price: 2000,
-  });
+  if(id === '999'){
+    res.status(404).json({
+      message: 'No found.'
+    })
+  }else{
+    res.status(200).json({
+      id,
+      name: 'Preduct 2',
+      price: 2000,
+    });
+  };
 });
 
 router.post('/', (req, res)=>{
   const body = req.body;
-  res.json({
+  res.status(201).json({
     meassage: 'created',
     data: body,
   });
@@ -49,7 +55,7 @@ router.post('/', (req, res)=>{
 router.patch('/:id', (req, res)=>{
   const {id} = req.params;
   const body = req.body;
-  res.json({
+  res.status(200).json({
     meassage: 'update',
     data: body,
     id,
@@ -58,7 +64,7 @@ router.patch('/:id', (req, res)=>{
 
 router.delete('/:id', (req, res)=>{
   const {id} = req.params;
-  res.json({
+  res.status(200).json({
     meassage: 'deleted',
     id,
   });
