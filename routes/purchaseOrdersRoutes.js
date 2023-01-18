@@ -5,8 +5,8 @@ const service = new PurchaseOrdersServices();
 
 // llamado: http://localhost:3000/api/v1/purchaseOrders
 
-router.get('/purchaseOrders',(req, res)=>{
-  const purchaseOrders = service.find();
+router.get('/purchaseOrders', async(req, res)=>{
+  const purchaseOrders = await service.find();
   res.status(200).json(purchaseOrders);
 })
 
@@ -19,28 +19,28 @@ router.get('/filter',(req, res)=>{
 
 // llamado: http://localhost:3000/api/v1/purchaseOrders/12
 
-router.get('/purchaseOrders/:id',(req, res)=>{
+router.get('/purchaseOrders/:id', async(req, res)=>{
   const {id} = req.params;
-  const purchaseOrders = service.findOne(id);
+  const purchaseOrders = await service.findOne(id);
   res.status(200).json(purchaseOrders)
 });
 
-router.post('/', (req, res)=>{
+router.post('/', async (req, res)=>{
   const body = req.body;
-  const newPurchaseOrder = service.create(body);
+  const newPurchaseOrder = await service.create(body);
   res.status(201).json(newPurchaseOrder);
 });
 
-router.patch('/:id', (req, res)=>{
+router.patch('/:id', async (req, res)=>{
   const {id} = req.params;
   const body = req.body;
-  const purchaseOrder = service.update(id, body);
+  const purchaseOrder = await service.update(id, body);
   res.status(200).json(purchaseOrder);
 });
 
-router.delete('/:id', (req, res)=>{
+router.delete('/:id', async (req, res)=>{
   const {id} = req.params;
-  const respuesta = service.delete(id)
+  const respuesta = await service.delete(id)
   res.status(200).json(respuesta);
 });
 

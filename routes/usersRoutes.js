@@ -6,8 +6,8 @@ const service = new UsersServices();
 // Endpoint con query:
 // llamado: http://localhost:3000/users?limit=10&offset=12
 
-router.get('/',(req, res)=>{
-  const users = service.find();
+router.get('/', async(req, res)=>{
+  const users = await service.find();
   res.status(200).send(users);
 
 });
@@ -22,28 +22,28 @@ router.get('/filter',(req, res)=>{
 // llamado: http://localhost:3000/api/v1/users/12
 // Este endpoit es dinamico
 
-router.get('/:id',(req, res)=>{
+router.get('/:id', async (req, res)=>{
   const {id} = req.params;
-  const users = service.findOne();
+  const users = await service.findOne();
   res.status(200).send(users);
 });
 
-router.post('/', (req, res)=>{
+router.post('/', async (req, res)=>{
   const body = req.body;
-  const newUser = service.create(body);
+  const newUser = await service.create(body);
   res.status(201).json(newUser);
 });
 
-router.patch('/:id', (req, res)=>{
+router.patch('/:id', async (req, res)=>{
   const {id} = req.params;
   const body = req.body;
-  const user = service.update(id, body);
+  const user = await service.update(id, body);
   res.status(200).json(user);
 });
 
-router.delete('/:id', (req, res)=>{
+router.delete('/:id', async (req, res)=>{
   const {id} = req.params;
-  const respuesta = service.delete(id)
+  const respuesta = await service.delete(id)
   res.status(200).json(respuesta);
 });
 

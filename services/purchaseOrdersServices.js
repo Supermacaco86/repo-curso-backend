@@ -14,7 +14,7 @@ class PurchaseOrdersServices{
       })
     }
   };
-  create(data){
+  async create(data){
     const newPurchaseOrder = {
       id: faker.datatype.uuid(),
       ...data
@@ -22,13 +22,13 @@ class PurchaseOrdersServices{
     this.purchaseOrders.push(newPurchaseOrder);
     return newPurchaseOrder;
   };
-  find(){
+  async find(){
     return this.purchaseOrders;
   };
-  findOne(id){
+  async findOne(id){
     return this.purchaseOrders.find(item => item.id === id);
   };
-  update(id, changes){
+  async update(id, changes){
     const index = this.purchaseOrders.findIndex(item => item.id === id);
     if(index ===-1){
       throw new Error('Product not foun.')
@@ -41,7 +41,7 @@ class PurchaseOrdersServices{
       return this.purchaseOrders[index];
     }
   };
-  delete(id){
+  async delete(id){
     const index = this.purchaseOrders.findIndex(item => item.id === id);
     if(index ===-1){
       throw new Error('Product not foun.')
