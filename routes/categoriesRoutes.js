@@ -25,9 +25,13 @@ router.get('/filter',(req, res)=>{
 // llamado: http://localhost:3000/api/v1/categories/12
 // Este endpoit es dinamico
 router.get('/:id', async(req, res)=>{
-  const {id} = req.params;
-  const categories = await service.findOne(id);
-  res.status(200).json(categories);
+  try {
+    const {id} = req.params;
+    const categories = await service.findOne(id);
+    res.status(200).json(categories);
+  } catch (error) {
+    next(error);
+  };
 });
 
 // Endpoint con dos parametros dinamicos en la url:

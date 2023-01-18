@@ -20,9 +20,13 @@ router.get('/filter',(req, res)=>{
 // llamado: http://localhost:3000/api/v1/purchaseOrders/12
 
 router.get('/purchaseOrders/:id', async(req, res)=>{
-  const {id} = req.params;
-  const purchaseOrders = await service.findOne(id);
-  res.status(200).json(purchaseOrders)
+  try {
+    const {id} = req.params;
+    const purchaseOrders = await service.findOne(id);
+    res.status(200).json(purchaseOrders)
+  } catch (error) {
+    next(error);
+  };
 });
 
 router.post('/', async (req, res)=>{
@@ -32,10 +36,16 @@ router.post('/', async (req, res)=>{
 });
 
 router.patch('/:id', async (req, res)=>{
-  const {id} = req.params;
-  const body = req.body;
-  const purchaseOrder = await service.update(id, body);
-  res.status(200).json(purchaseOrder);
+  try {
+    const {id} = req.params;
+    const body = req.body;
+    const purchaseOrder = await service.update(id, body);
+    res.status(200).json(purchaseOrder);
+  } catch (error) {
+    res.status(404).json({
+      message: error.message
+    });
+  };
 });
 
 router.delete('/:id', async (req, res)=>{
