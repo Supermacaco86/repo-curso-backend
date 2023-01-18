@@ -51,7 +51,7 @@ class ProductsService {
     }else{
       this.products.splice(index, 1);
       return { id };
-    }
+    };
   };
 };
 
