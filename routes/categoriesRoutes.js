@@ -1,7 +1,7 @@
 const express = require('express');
 const faker = require('faker');
 const router = express.Router();
-
+const service = new CategoriesServices();
 
 
 
@@ -11,16 +11,8 @@ const router = express.Router();
 // y lo hacemos asi: http://localhost:3000/api/v1/categories?size=5
 
 router.get('/',(req, res)=>{
-  const categories = [];
-  const {size} = req.query;
-  const limit = size || 10;
-  for(let index = 0; index < limit; index ++){
-    products.push({
-      name: faker.commerce.productName(),
-      image: faker.image.imageUrl(),
-    })
-  }
-  res.json(categories);
+  const categories = service.find();
+  res.status(200).json(categories);
 });
 
 // Este endpoint es especifico.
@@ -34,11 +26,8 @@ router.get('/filter',(req, res)=>{
 // Este endpoit es dinamico
 router.get('/:id', (req, res)=>{
   const {id} = req.params;
-  res.json({
-    id,
-    name: 'Categories 2',
-    price: 2000,
-  })
+  const categories = service.findOne(id);
+  res.status(200).json(categories);
 })
 
 // Endpoint con dos parametros dinamicos en la url:
