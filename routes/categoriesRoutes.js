@@ -1,6 +1,5 @@
 const express = require('express');
 const CategoriesServices = require('./../services/categoriesServices')
-const faker = require('faker');
 const router = express.Router();
 const service = new CategoriesServices();
 
@@ -41,5 +40,24 @@ router.get('/:categoryId/products/:productId', (req, res)=>{
     productId,
   })
 })
+
+router.post('/', (req, res)=>{
+  const body = req.body;
+  const newCategory = service.create(body);
+  res.status(201).json(newCategory);
+});
+
+router.patch('/:id', (req, res)=>{
+  const {id} = req.params;
+  const body = req.body;
+  const categories = service.update(id, body);
+  res.status(200).json(categories);
+});
+
+router.delete('/:id', (req, res)=>{
+  const {id} = req.params;
+  const respuesta = service.delete(id)
+  res.status(200).json(respuesta);
+});
 
 module.exports = router;
