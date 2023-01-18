@@ -31,28 +31,21 @@ router.get('/:id', (req, res)=>{
 
 router.post('/', (req, res)=>{
   const body = req.body;
-  res.status(201).json({
-    meassage: 'created',
-    data: body,
-  });
+  const newProduct = service.create(body);
+  res.status(201).json(newProduct);
 });
 
 router.patch('/:id', (req, res)=>{
   const {id} = req.params;
   const body = req.body;
-  res.status(200).json({
-    meassage: 'update',
-    data: body,
-    id,
-  });
+  const product = service.update(id, body);
+  res.status(200).json(product);
 });
 
 router.delete('/:id', (req, res)=>{
   const {id} = req.params;
-  res.status(200).json({
-    meassage: 'deleted',
-    id,
-  });
+  const respuesta = service.delete(id)
+  res.status(200).json(respuesta);
 });
 
 module.exports = router;

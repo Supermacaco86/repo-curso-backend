@@ -1,6 +1,6 @@
 const faker = require('faker');
 
-class CategoriesServices{
+class CategoriesServices {
   constructor(){
     this.categories = [];
     this.generate();

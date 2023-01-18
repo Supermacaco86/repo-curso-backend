@@ -1,4 +1,5 @@
 const express = require('express');
+const CategoriesServices = require('./../services/categoriesServices')
 const faker = require('faker');
 const router = express.Router();
 const service = new CategoriesServices();
