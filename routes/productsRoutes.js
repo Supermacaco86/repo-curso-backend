@@ -19,14 +19,18 @@ router.get('/', async(req, res)=>{
 
 router.get('/filter',(req, res)=>{
   res.status(200).send('Yo soy un filter');
-})
+});
 
 // llamado: http://localhost:3000/api/v1/products/12
 // Este endpoit es dinamico
-router.get('/:id', async (req, res)=>{
-  const {id} = req.params;
-  const product = await service.findOne(id);
-  res.status(200).json(product);
+router.get('/:id', async (req, res, next)=>{
+  try {
+    const {id} = req.params;
+    const product = await service.findOne(id);
+    res.status(200).json(product);
+  } catch (error) {
+    next(error);
+  };
 });
 
 router.post('/', async (req, res)=>{
@@ -44,9 +48,8 @@ router.patch('/:id', async (req, res)=>{
   }catch(error){
     res.status(404).json({
       message: error.message
-    })
-  }
-
+    });
+  };
 });
 
 router.delete('/:id', async (req, res)=>{

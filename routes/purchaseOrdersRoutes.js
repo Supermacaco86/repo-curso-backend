@@ -8,14 +8,14 @@ const service = new PurchaseOrdersServices();
 router.get('/purchaseOrders', async(req, res)=>{
   const purchaseOrders = await service.find();
   res.status(200).json(purchaseOrders);
-})
+});
 
 // Este endpoint es especifico.
 // Los endpoints especificos van antes que los dinamicos sino no van a funcionar.
 
 router.get('/filter',(req, res)=>{
   res.status(200).send('Yo soy un filter');
-})
+});
 
 // llamado: http://localhost:3000/api/v1/purchaseOrders/12
 

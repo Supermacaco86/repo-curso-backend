@@ -9,7 +9,6 @@ const service = new UsersServices();
 router.get('/', async(req, res)=>{
   const users = await service.find();
   res.status(200).send(users);
-
 });
 
 // Este endpoint es especifico.
