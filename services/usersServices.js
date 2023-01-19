@@ -1,10 +1,12 @@
 const faker = require('faker');
+const boom = require('@hapi/boom');
 
 class UsersServices{
   constructor(){
     this.users = [];
     this.generate();
   };
+
   generate(){
     const limit = 100;
     for(let index = 0; index < limit; index ++){
@@ -15,6 +17,7 @@ class UsersServices{
       })
     }
   };
+
   async create(data){
     const newUser = {
       id: faker.datatype.uuid(),
@@ -23,12 +26,22 @@ class UsersServices{
     this.users.push(newUser);
     return newUser;
   };
+
   async find(){
     return this.users;
   };
+
   async findOne(id){
-    return this.users.find(item => item.id === id);
+    const user = this.users.find(item => item.id === id);
+    if(!user){
+      throw boom.notFound('User not foun.');
+    }else if(user.isBlock){
+      throw boom.conflict('User is block.');
+    }else{
+      return user;
+    };
   };
+
   async update(id, changes){
     const index = this.users.findIndex(item => item.id === id);
     if(index ===-1){
@@ -42,6 +55,7 @@ class UsersServices{
       return this.users[index];
     };
   };
+
   async delete(id){
     const index = this.users.findIndex(item => item.id === id);
     if(index ===-1){
@@ -52,5 +66,6 @@ class UsersServices{
     };
   };
 };
+
 module.exports = UsersServices;
 

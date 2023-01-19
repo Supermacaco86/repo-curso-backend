@@ -1,6 +1,6 @@
 const express = require('express');
 const routerApi = require('./routes')
-const  {logErrors, errorHandler} = require('./middleware/errorHandler')
+const  {logErrors, errorHandler, boomErrorHandler} = require('./middleware/errorHandler')
 const app = express();
 const port = 3000;
 
@@ -16,6 +16,7 @@ routerApi(app);
 // Ademas es impotante el orden en que los agregamos: comportamiento secuencial.
 // Deben estar en el orden en que queremos que se ejecuten.
 app.use(logErrors);
+app.use(boomErrorHandler);
 app.use(errorHandler);
 
 // llamado: // llamado: http://localhost:3000/

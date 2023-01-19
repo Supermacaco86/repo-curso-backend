@@ -42,9 +42,7 @@ router.patch('/:id', async (req, res)=>{
     const purchaseOrder = await service.update(id, body);
     res.status(200).json(purchaseOrder);
   } catch (error) {
-    res.status(404).json({
-      message: error.message
-    });
+    next(error);
   };
 });
 

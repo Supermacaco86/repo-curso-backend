@@ -58,9 +58,7 @@ router.patch('/:id', async (req, res)=>{
     const categories = await service.update(id, body);
     res.status(200).json(categories);
   }catch(error){
-    res.status(404).json({
-      message: error.message
-    });
+    next(error);
   };
 });
 
