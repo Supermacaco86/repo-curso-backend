@@ -1,5 +1,7 @@
 const express = require('express');
-const UsersServices = require('./../services/usersServices')
+const UsersServices = require('./../services/usersServices');
+const validatorHandler = require('./../middleware/validatorHandler');
+const {createUserSchema, updateUserSchema, getUserSchema} = require('./../schemas/userSchema');
 const router = express.Router();
 const service = new UsersServices();
 
@@ -21,32 +23,42 @@ router.get('/filter',(req, res)=>{
 // llamado: http://localhost:3000/api/v1/users/12
 // Este endpoit es dinamico
 
-router.get('/:id', async (req, res)=>{
-  try {
-    const {id} = req.params;
-    const users = await service.findOne();
-    res.status(200).send(users);
-  } catch (error) {
-    next(error);
-  };
-});
+router.get('/:id',
+validatorHandler(getUserSchema, 'params'),
+  async (req, res)=>{
+    try {
+      const {id} = req.params;
+      const users = await service.findOne();
+      res.status(200).send(users);
+    } catch (error) {
+      next(error);
+    };
+  }
+);
 
-router.post('/', async (req, res)=>{
-  const body = req.body;
-  const newUser = await service.create(body);
-  res.status(201).json(newUser);
-});
-
-router.patch('/:id', async (req, res)=>{
-  try {
-    const {id} = req.params;
+router.post('/',
+validatorHandler(createUserSchema, 'body'),
+  async (req, res)=>{
     const body = req.body;
-    const user = await service.update(id, body);
-    res.status(200).json(user);
-  } catch (error) {
-    next(error);
-  };
-});
+    const newUser = await service.create(body);
+    res.status(201).json(newUser);
+  }
+);
+
+router.patch('/:id',
+validatorHandler(getUserSchema, 'params'),
+validatorHandler(updateUserSchema, 'body'),
+  async (req, res)=>{
+    try {
+      const {id} = req.params;
+      const body = req.body;
+      const user = await service.update(id, body);
+      res.status(200).json(user);
+    } catch (error) {
+      next(error);
+    };
+  }
+);
 
 router.delete('/:id', async (req, res)=>{
   const {id} = req.params;

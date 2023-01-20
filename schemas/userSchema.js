@@ -3,16 +3,16 @@ const Joi = require('joi');
 const id = Joi.string().uuid();
 const name = Joi.string().alphanum().min(3).max(20);
 
-const createUserSchema = joi.object({
+const createUserSchema = Joi.object({
   name: name.required(),
 });
 
-const updateUserSchema = joi.object({
+const updateUserSchema = Joi.object({
   name: name,
 });
 
-const getUserSchema = joi.object({
-  id: id.require(),
+const getUserSchema = Joi.object({
+  id: id.required(),
 });
 
 module.exports = {createUserSchema, updateUserSchema, getUserSchema};

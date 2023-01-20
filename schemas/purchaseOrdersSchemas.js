@@ -3,16 +3,16 @@ const Joi = require('joi');
 const id = Joi.string().uuid();
 const name = Joi.string().alphanum().min(3).max(20);
 
-const createPurchaseOrdersSchema = joi.object({
+const createPurchaseOrdersSchema = Joi.object({
   name: name.required(),
 });
 
-const updatePurchaseOrdersSchema = joi.object({
+const updatePurchaseOrdersSchema = Joi.object({
   name: name,
 });
 
-const getPurchaseOrdersSchema = joi.object({
-  id: id.require(),
+const getPurchaseOrdersSchema = Joi.object({
+  id: id.required(),
 });
 
 module.exports = {createPurchaseOrdersSchema, updatePurchaseOrdersSchema, getPurchaseOrdersSchema};

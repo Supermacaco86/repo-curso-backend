@@ -1,5 +1,7 @@
 const express = require('express');
 const CategoriesServices = require('./../services/categoriesServices')
+const validatorHandler = require('./../middleware/validatorHandler');
+const {createCategoriesSchema, updateCategoriesSchema, getCategoriesSchema} = require('./../schemas/categoriesSchema');
 const router = express.Router();
 const service = new CategoriesServices();
 
@@ -24,15 +26,18 @@ router.get('/filter',(req, res)=>{
 
 // llamado: http://localhost:3000/api/v1/categories/12
 // Este endpoit es dinamico
-router.get('/:id', async(req, res)=>{
-  try {
-    const {id} = req.params;
-    const categories = await service.findOne(id);
-    res.status(200).json(categories);
-  } catch (error) {
-    next(error);
-  };
-});
+router.get('/:id',
+validatorHandler(getCategoriesSchema, 'params'),
+  async(req, res)=>{
+    try {
+      const {id} = req.params;
+      const categories = await service.findOne(id);
+      res.status(200).json(categories);
+    } catch (error) {
+      next(error);
+    };
+  }
+);
 
 // Endpoint con dos parametros dinamicos en la url:
 // Llamado: http://localhost:3000/api/v1/categories/12/products/12
@@ -45,22 +50,29 @@ router.get('/:categoryId/products/:productId', (req, res)=>{
   });
 });
 
-router.post('/', async (req, res)=>{
-  const body = req.body;
-  const newCategory = await service.create(body);
-  res.status(201).json(newCategory);
-});
-
-router.patch('/:id', async (req, res)=>{
-  try{
-    const {id} = req.params;
+router.post('/',
+validatorHandler(createCategoriesSchema, 'body'),
+  async (req, res)=>{
     const body = req.body;
-    const categories = await service.update(id, body);
-    res.status(200).json(categories);
-  }catch(error){
-    next(error);
-  };
-});
+    const newCategory = await service.create(body);
+    res.status(201).json(newCategory);
+  }
+);
+
+router.patch('/:id',
+validatorHandler(getCategoriesSchema, 'params'),
+validatorHandler(updateCategoriesSchema, 'body'),
+  async (req, res)=>{
+    try{
+      const {id} = req.params;
+      const body = req.body;
+      const categories = await service.update(id, body);
+      res.status(200).json(categories);
+    }catch(error){
+      next(error);
+    };
+  }
+);
 
 router.delete('/:id', async (req, res)=>{
   try {
